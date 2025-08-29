@@ -1,0 +1,7 @@
+{"patient_id": "pat_2118", "procedure_id": "proc_pat_2118_t018577", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן"}}
+{"patient_id": "pat_2118", "procedure_id": "proc_pat_2118_t018578", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן"}}
+{"patient_id": "pat_2118", "procedure_id": "proc_pat_2118_t018579", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן"}}
+{"patient_id": "pat_2118", "procedure_id": "proc_pat_2118_t018580", "visit_id": "vis_pat_2118_20230803_prv_fa47dc0b", "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן", "provider": "prv_fa47dc0b"}}
+{"patient_id": "pat_2118", "procedure_id": "proc_pat_2118_t018581", "visit_id": "vis_pat_2118_20230817_prv_fa47dc0b", "summary": {"status": "cancelled", "teeth_count": 0, "created_by": "ברוך  הופמן", "provider": "prv_fa47dc0b"}}
+{"patient_id": "pat_2118", "procedure_id": "proc_pat_2118_t018582", "visit_id": "vis_pat_2118_20230824_prv_fa47dc0b", "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן", "provider": "prv_fa47dc0b"}}
+{"patient_id": "pat_2118", "procedure_id": "proc_pat_2118_t018583", "visit_id": "vis_pat_2118_20230831_prv_fa47dc0b", "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן", "provider": "prv_fa47dc0b"}}

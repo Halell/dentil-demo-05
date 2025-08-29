@@ -1,0 +1,2 @@
+{"patient_id": "pat_1770", "procedure_id": "proc_pat_1770_t013650", "visit_id": null, "summary": {"status": "planned", "treatment_short_code_name": "טיפול שיננית והדרכה", "procedure_code": "טשר", "teeth_count": 0, "created_by": "שרון חבר"}}
+{"patient_id": "pat_1770", "procedure_id": "proc_pat_1770_t013651", "visit_id": "vis_pat_1770_20230115_prv_f0615928", "summary": {"status": "planned", "treatment_short_code_name": "טיפול שיננית - נורית", "procedure_code": "טשנ", "teeth_count": 0, "created_by": "שרון חבר", "provider": "prv_f0615928"}}

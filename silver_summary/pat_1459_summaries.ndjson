@@ -1,0 +1,2 @@
+{"patient_id": "pat_1459", "procedure_id": "proc_pat_1459_t008402", "visit_id": null, "summary": {"status": "planned", "treatment_short_code_name": "טיפול שיננית והדרכה", "procedure_code": "טשר", "teeth_count": 0, "created_by": "שרון חבר"}}
+{"patient_id": "pat_1459", "procedure_id": "proc_pat_1459_t008403", "visit_id": "vis_pat_1459_20221019_prv_f0615928", "summary": {"status": "planned", "teeth_count": 0, "patient_card_note": "טיפול שיננית - ג'ניפר", "created_by": "ד\"ר לוין", "provider": "prv_f0615928"}}

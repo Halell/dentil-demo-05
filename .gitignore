@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+artifacts/
+models/embeddings/
+.env
+.env.*
+.data/
+.data*/
+.idea/
+.vscode/
+.silver_summary/

@@ -1,0 +1,3 @@
+{"patient_id": "pat_2682", "procedure_id": "proc_pat_2682_t025356", "visit_id": null, "summary": {"status": "planned", "treatment_short_code_name": "בדיקה + צילומים", "procedure_code": "בצ", "teeth_count": 0, "created_by": "שרון חבר"}}
+{"patient_id": "pat_2682", "procedure_id": "proc_pat_2682_t025357", "visit_id": null, "summary": {"status": "cancelled", "teeth_count": 0, "patient_card_note": "אי הופעה", "created_by": "רוזי פלג - שיננית"}}
+{"patient_id": "pat_2682", "procedure_id": "proc_pat_2682_t025358", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "patient_card_note": "אי הופעה", "created_by": "רוזי פלג - שיננית"}}

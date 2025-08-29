@@ -1,0 +1,2 @@
+{"patient_id": "pat_2796", "procedure_id": "proc_pat_2796_t026037", "visit_id": null, "summary": {"status": "planned", "treatment_short_code_name": "בדיקה + צילומים", "procedure_code": "בצ", "teeth_count": 0, "created_by": "שרון חבר"}}
+{"patient_id": "pat_2796", "procedure_id": "proc_pat_2796_t026038", "visit_id": "vis_pat_2796_20250714_prv_cf40f3cd", "summary": {"status": "completed", "performed_at": "2025-07-14T00:00:00", "teeth_count": 0, "patient_card_note": "אי הופעה", "created_by": "ד\"ר ד טורקיה", "provider": "prv_cf40f3cd"}}

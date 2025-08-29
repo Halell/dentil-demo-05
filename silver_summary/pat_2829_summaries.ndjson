@@ -1,0 +1,2 @@
+{"patient_id": "pat_2829", "procedure_id": "proc_pat_2829_t026157", "visit_id": null, "summary": {"status": "planned", "treatment_short_code_name": "טיפול שיננית והדרכה", "procedure_code": "טשר", "teeth_count": 0, "patient_card_note": "הגיע במבצע הלבנה ב500 אבל רצה מטפל גבר אז יגיע לניקוי ע\"י רופא אז 850 הכל", "created_by": "שרון חבר"}}
+{"patient_id": "pat_2829", "procedure_id": "proc_pat_2829_t026158", "visit_id": null, "summary": {"status": "planned", "treatment_short_code_name": "הלבנת שיניים בבית", "procedure_code": "השב", "teeth_count": 0, "created_by": "שרון חבר"}}

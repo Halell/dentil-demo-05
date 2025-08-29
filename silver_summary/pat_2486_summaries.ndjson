@@ -1,0 +1,3 @@
+{"patient_id": "pat_2486", "procedure_id": "proc_pat_2486_t023870", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "created_by": "שרון חבר"}}
+{"patient_id": "pat_2486", "procedure_id": "proc_pat_2486_t023871", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "created_by": "שרון חבר"}}
+{"patient_id": "pat_2486", "procedure_id": "proc_pat_2486_t023872", "visit_id": null, "summary": {"status": "cancelled", "teeth_count": 0, "created_by": "קטי רינסקי"}}

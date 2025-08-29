@@ -1,0 +1,2 @@
+{"patient_id": "pat_2253", "procedure_id": "proc_pat_2253_t020536", "visit_id": null, "summary": {"status": "cancelled", "teeth_count": 0, "created_by": "שרון חבר"}}
+{"patient_id": "pat_2253", "procedure_id": "proc_pat_2253_t020537", "visit_id": "vis_pat_2253_20231123_prv_41ac70f1", "summary": {"status": "planned", "teeth_count": 0, "created_by": "קטי רינסקי", "provider": "prv_41ac70f1"}}

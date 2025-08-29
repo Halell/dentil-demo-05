@@ -1,0 +1,2 @@
+{"patient_id": "pat_2631", "procedure_id": "proc_pat_2631_t024993", "visit_id": null, "summary": {"status": "planned", "treatment_short_code_name": "טיפול שיננית והדרכה", "procedure_code": "טשר", "teeth_count": 0, "created_by": "קטי רינסקי"}}
+{"patient_id": "pat_2631", "procedure_id": "proc_pat_2631_t024994", "visit_id": null, "summary": {"status": "planned", "treatment_short_code_name": "מבצע מונעת. שיננית + ביקורת", "procedure_code": "ממ", "teeth_count": 0, "created_by": "קטי רינסקי"}}

@@ -1,0 +1,3 @@
+{"patient_id": "pat_1776", "procedure_id": "proc_pat_1776_t013726", "visit_id": null, "summary": {"status": "cancelled", "treatment_short_code_name": "טיפול שיננית והדרכה", "procedure_code": "טשר", "teeth_count": 0, "created_by": "שרון חבר"}}
+{"patient_id": "pat_1776", "procedure_id": "proc_pat_1776_t013727", "visit_id": null, "summary": {"status": "cancelled", "treatment_short_code_name": "בדיקה + צילומים", "procedure_code": "בצ", "teeth_count": 0, "created_by": "שרון חבר"}}
+{"patient_id": "pat_1776", "procedure_id": "proc_pat_1776_t013728", "visit_id": "vis_pat_1776_20230201_prv_9d919fc5", "summary": {"status": "cancelled", "procedure_code": "טשר", "teeth_count": 0, "created_by": "ד\"ר ד טורקיה", "provider": "prv_9d919fc5"}}

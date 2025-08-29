@@ -1,0 +1,2 @@
+{"patient_id": "pat_1457", "procedure_id": "proc_pat_1457_t008378", "visit_id": null, "summary": {"status": "cancelled", "treatment_short_code_name": "ניהול הטיפול", "procedure_code": "נט", "teeth_count": 0, "patient_card_note": "ניהול הטיפול\n\nחסר תכנית טיפול﻿\nלמה עשו סריקה ?", "created_by": "ברוך  הופמן"}}
+{"patient_id": "pat_1457", "procedure_id": "proc_pat_1457_t008379", "visit_id": null, "summary": {"status": "cancelled", "treatment_short_code_name": "סטנט להשתלה", "procedure_code": "סטנט", "teeth_count": 0, "created_by": "ברוך  הופמן"}}

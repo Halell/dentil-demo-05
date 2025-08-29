@@ -1,0 +1,2 @@
+{"patient_id": "pat_2256", "procedure_id": "proc_pat_2256_t020581", "visit_id": null, "summary": {"status": "planned", "procedure_code": "טשנ", "teeth_count": 0, "created_by": "ברוך  הופמן"}}
+{"patient_id": "pat_2256", "procedure_id": "proc_pat_2256_t020582", "visit_id": "vis_pat_2256_20240506_prv_41ac70f1", "summary": {"status": "planned", "teeth_count": 0, "sticky_note_texts": ["25.04.24 יש לו בעיה בשתל שעשה לפני הרבה שנים אצל ד\"ה ואז ד\"ר סונדרס שלחה אותו חזרה לד\"ה (שרון)\n06.05.24 לחזור לד\"ר סונדרס (שרון)"], "created_by": "שרון חבר", "provider": "prv_41ac70f1"}}

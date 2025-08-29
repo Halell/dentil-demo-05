@@ -1,0 +1,24 @@
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022109", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022110", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022111", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022112", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022113", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022114", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "created_by": "קטי רינסקי"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022115", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "created_by": "קטי רינסקי"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022116", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022117", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022118", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022119", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022120", "visit_id": "vis_pat_2372_20240704_prv_41ac70f1", "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן", "provider": "prv_41ac70f1"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022121", "visit_id": "vis_pat_2372_20240704_prv_cf40f3cd", "summary": {"status": "planned", "teeth_count": 0, "created_by": "קטי רינסקי", "provider": "prv_cf40f3cd"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022122", "visit_id": "vis_pat_2372_20240704_prv_fa47dc0b", "summary": {"status": "planned", "teeth_count": 0, "created_by": "קטי רינסקי", "provider": "prv_fa47dc0b"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022123", "visit_id": "vis_pat_2372_20241107_prv_fa47dc0b", "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן", "provider": "prv_fa47dc0b"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022124", "visit_id": "vis_pat_2372_20241107_prv_fa47dc0b", "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן", "provider": "prv_fa47dc0b"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022125", "visit_id": "vis_pat_2372_20241121_prv_cf40f3cd", "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן", "provider": "prv_cf40f3cd"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022126", "visit_id": "vis_pat_2372_20241121_prv_fa47dc0b", "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן", "provider": "prv_fa47dc0b"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022127", "visit_id": "vis_pat_2372_20241125_prv_cf40f3cd", "summary": {"status": "planned", "teeth_count": 0, "created_by": "ד\"ר ד טורקיה", "provider": "prv_cf40f3cd"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022128", "visit_id": "vis_pat_2372_20241205_prv_41ac70f1", "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן", "provider": "prv_41ac70f1"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022129", "visit_id": "vis_pat_2372_20250224_prv_fa47dc0b", "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן", "provider": "prv_fa47dc0b"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022130", "visit_id": "vis_pat_2372_20250324_prv_fa47dc0b", "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן", "provider": "prv_fa47dc0b"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022131", "visit_id": "vis_pat_2372_20250324_prv_cf40f3cd", "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן", "provider": "prv_cf40f3cd"}}
+{"patient_id": "pat_2372", "procedure_id": "proc_pat_2372_t022132", "visit_id": "vis_pat_2372_20250731_prv_cf40f3cd", "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן", "provider": "prv_cf40f3cd"}}

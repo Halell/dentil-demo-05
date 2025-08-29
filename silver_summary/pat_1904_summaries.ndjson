@@ -1,0 +1,2 @@
+{"patient_id": "pat_1904", "procedure_id": "proc_pat_1904_t015530", "visit_id": null, "summary": {"status": "cancelled", "treatment_short_code_name": "טיפול שיננית והדרכה", "procedure_code": "טשר", "teeth_count": 0, "created_by": "ד\"ר ד טורקיה"}}
+{"patient_id": "pat_1904", "procedure_id": "proc_pat_1904_t015531", "visit_id": null, "summary": {"status": "planned", "procedure_code": "טשנ", "teeth_count": 0, "created_by": "שרון חבר"}}

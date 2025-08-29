@@ -1,0 +1,2 @@
+{"patient_id": "pat_1177", "procedure_id": "proc_pat_1177_t003670", "visit_id": null, "summary": {"status": "cancelled", "teeth_count": 0, "created_by": "שרון חבר"}}
+{"patient_id": "pat_1177", "procedure_id": "proc_pat_1177_t003671", "visit_id": "vis_pat_1177_20221212_prv_41ac70f1", "summary": {"status": "planned", "treatment_short_code_name": "עזרה ראשונה קטנה", "procedure_code": "ערא", "teeth_count": 0, "patient_card_note": "עזרה ראשונה", "created_by": "שרון חבר", "provider": "prv_41ac70f1"}}

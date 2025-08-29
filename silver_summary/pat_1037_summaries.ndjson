@@ -1,0 +1,2 @@
+{"patient_id": "pat_1037", "procedure_id": "proc_pat_1037_t001397", "visit_id": null, "summary": {"status": "planned", "treatment_short_code_name": "שתל", "procedure_code": "שתל", "teeth_count": 0, "created_by": "ברוך  הופמן"}}
+{"patient_id": "pat_1037", "procedure_id": "proc_pat_1037_t001398", "visit_id": "vis_pat_1037_20220721_prv_6a335bb2", "summary": {"status": "planned", "treatment_short_code_name": "סטנט להשתלה", "procedure_code": "סטנט", "teeth_count": 0, "created_by": "ברוך  הופמן", "provider": "prv_6a335bb2"}}

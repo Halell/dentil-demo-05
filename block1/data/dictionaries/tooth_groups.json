@@ -1,0 +1,82 @@
+{
+  "lower_incisors": {
+    "label_he": "חותכות תחתונות",
+    "label_en": "lower incisors",
+    "FDI": [
+      "31",
+      "32",
+      "41",
+      "42"
+    ]
+  },
+  "upper_incisors": {
+    "label_he": "חותכות עליונות",
+    "label_en": "upper incisors",
+    "FDI": [
+      "11",
+      "12",
+      "21",
+      "22"
+    ]
+  },
+  "lower_canines": {
+    "label_he": "ניבים תחתונים",
+    "label_en": "lower canines",
+    "FDI": [
+      "33",
+      "43"
+    ]
+  },
+  "upper_canines": {
+    "label_he": "ניבים עליונים",
+    "label_en": "upper canines",
+    "FDI": [
+      "13",
+      "23"
+    ]
+  },
+  "upper_premolars": {
+    "label_he": "פרהמולרים עליונים",
+    "label_en": "upper premolars",
+    "FDI": [
+      "14",
+      "15",
+      "24",
+      "25"
+    ]
+  },
+  "lower_premolars": {
+    "label_he": "פרהמולרים תחתונים",
+    "label_en": "lower premolars",
+    "FDI": [
+      "34",
+      "35",
+      "44",
+      "45"
+    ]
+  },
+  "upper_molars": {
+    "label_he": "טוחנות עליונות",
+    "label_en": "upper molars",
+    "FDI": [
+      "16",
+      "17",
+      "18",
+      "26",
+      "27",
+      "28"
+    ]
+  },
+  "lower_molars": {
+    "label_he": "טוחנות תחתונות",
+    "label_en": "lower molars",
+    "FDI": [
+      "36",
+      "37",
+      "38",
+      "46",
+      "47",
+      "48"
+    ]
+  }
+}

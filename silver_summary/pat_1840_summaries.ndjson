@@ -1,0 +1,7 @@
+{"patient_id": "pat_1840", "procedure_id": "proc_pat_1840_t014757", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "created_by": "ד\"ר הופמן"}}
+{"patient_id": "pat_1840", "procedure_id": "proc_pat_1840_t014758", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "created_by": "ד\"ר הופמן"}}
+{"patient_id": "pat_1840", "procedure_id": "proc_pat_1840_t014759", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן"}}
+{"patient_id": "pat_1840", "procedure_id": "proc_pat_1840_t014760", "visit_id": "vis_pat_1840_20230220_prv_6a335bb2", "summary": {"status": "planned", "treatment_short_code_name": "חופש", "procedure_code": "חו", "teeth_count": 0, "created_by": "שרון חבר", "provider": "prv_6a335bb2"}}
+{"patient_id": "pat_1840", "procedure_id": "proc_pat_1840_t014761", "visit_id": "vis_pat_1840_20240521_prv_41ac70f1", "summary": {"status": "planned", "teeth_count": 0, "created_by": "ד\"ר הופמן", "provider": "prv_41ac70f1"}}
+{"patient_id": "pat_1840", "procedure_id": "proc_pat_1840_t014762", "visit_id": "vis_pat_1840_20240522_prv_41ac70f1", "summary": {"status": "planned", "teeth_count": 0, "created_by": "ד\"ר הופמן", "provider": "prv_41ac70f1"}}
+{"patient_id": "pat_1840", "procedure_id": "proc_pat_1840_t014763", "visit_id": "vis_pat_1840_20241202_prv_41ac70f1", "summary": {"status": "planned", "teeth_count": 0, "created_by": "ברוך  הופמן", "provider": "prv_41ac70f1"}}

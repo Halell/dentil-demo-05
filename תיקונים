@@ -1,0 +1,184 @@
+
+
+1. **הגזטיר עדיין חלש** (אין פאזי עברית אמיתי, סדר n‑gram חוסם טוקן יחיד).
+2. **יש צורך ב”רשת ביטחון” עם LLM**, אבל **רק** כ־*String Canonicalizer* (לא קובע IRI!), כדי שלא יהיה מסוכן.
+
+להלן **תיקון מרובע** שפותח את הזרימה ב‑Block 2 מיד, ואחריו שכבת LLM מצומצמת ובטוחה. בסוף יש **תוצאה צפויה** לשורה שלך.
+
+---
+
+## Patch v2 ל‑Block 2 — משימות ממוקדות (ליישום עכשיו)
+
+### 1) Fast‑Path לטוקן יחיד לפני n‑gram
+
+**קבצים:** `src/pipeline/t2_gazetteer.py`
+
+* לפני שאתה יוצר n‑grams, תריץ התאמה **ישירה** על כל טוקן `kind="word"`.
+* אם נמצאה התאמה (מדויק/סינונימי/פאזי) → נעל את ה‑span של הטוקן כ‑mention.
+* רק לאחר מכן הרץ n‑grams **לשאר הטווחים** שלא כוסו (non‑overlapping).
+
+```python
+# פסאודו
+for tok in tokens:
+    if tok.kind != "word": continue
+    match = gaz_exact_or_fuzzy(tok.text)
+    if match: add_mention(span=tok.span, surface=tok.text, ...)
+cover_mask = spans_of_locked_mentions
+# עכשיו n-grams רק על אזורים שלא כוסו
+```
+
+### 2) פאזי עברית אמיתי (Damerau) + נורמליזציה עברית
+
+**קבצים:** `src/pipeline/t2_gazetteer.py`, `src/pipeline/_he_norm.py` (חדש)
+
+* הוסף פונקציה:
+
+```python
+from rapidfuzz.distance import DamerauLevenshtein as DL
+
+def norm_he(s: str) -> str:
+    # הסר רווחים/מקפים/גרשיים, המרת ניקוד, NFC
+    return (s.replace(" ", "").replace("-", "").replace("״","").replace("׳",""))
+
+def he_fuzzy_ok(q: str, cand: str, max_ed=1, min_ratio=90) -> bool:
+    qn, cn = norm_he(q), norm_he(cand)
+    return (DL.distance(qn, cn) <= max_ed) or (DL.normalized_similarity(qn, cn)*100 >= min_ratio)
+```
+
+* הפעל `he_fuzzy_ok` **רק אם** אין התאמה מדויקת/סינונימית לטוקן.
+* `match_type="fuzzy"` עם `score_lex=0.7` (או יחס משוקלל).
+
+### 3) תקן חישוב span (באג \[0–21] ל‑"14")
+
+**קובץ:** `src/pipeline/t2_gazetteer.py`
+
+* בעת התאמה בתוך חלון n‑gram, חשב `global_start/global_end` לפי הטוקן הראשון בחלון (כפי שהצעתי בתגובה הקודמת).
+* הוסף `covered_token_idxs` לכל mention (טווח אינדקסי טוקנים).
+* **אל תיצור mentions** מטוקנים `{"number","pair","unit"}`.
+
+### 4) חיזוק הלקסיקון: גשר HE→EN→IRI
+
+**קבצים:**
+
+* `data/dictionaries/clinic_abbreviations.json` (הרחב),
+* `data/dictionaries/he2en_static.json` (חדש),
+* **חדש:** `data/dictionaries/en_alias_to_iri.json`
+
+רעיון:
+
+* `he2en_static.json` ממפה עברית → סטרינגים אנגליים קנוניים (למשל `"מולטיוניט": ["multi unit abutment","multi-unit abutment"]`).
+* `en_alias_to_iri.json` ממפה סטרינגים אנגליים שכיחים → IRI OHD מתאים (למשל `"multi-unit abutment"` → `OHD:...dental implant abutment`).
+* בבניית הגזטיר, טען את שני הקבצים והוסף את ה‑aliases ל‑KeywordProcessor יחד עם ה‑labels/synonyms מתוך OHD.
+
+> שים לב: **אל תתלה** רק ב‑OHD; OHD קוראת לזה “dental implant abutment”, ולכן “multi‑unit abutment” חייב להופיע כ־alias משלך.
+
+### 5) Vector Fallback טוב יותר
+
+**קבצים:** `src/pipeline/cand_faiss.py` / `cand_neo4j.py`
+
+* פונקציית שאילתה תעבוד כך:
+
+  1. אם יש `llm_aug.canonical_terms` → השתמש בהם;
+  2. אחרת, בדוק `he2en_static[ surface ]`;
+  3. אחרת, `surface` כמו שהוא.
+* הוסף **neighborhood context** (מילה לפני/אחרי) לבניית טקסט השאילתה:
+
+```python
+query = " ".join(canonical_or_surface + neighbor_words)
+```
+
+### 6) נרמול ציוני וקטור כשאין תוצאות
+
+**קובץ:** `src/pipeline/hybrid_ranker.py`
+
+* אם אין `candidates_vec` לאזכור → `score_vec_norm=0.0` (לא 1.0).
+* פונקציית `normalize_scores` עם guard ל‑Hi==Lo → 0.0 (לא לנפח).
+
+### 7) Router “אין התאמה” → LLM‑Rescue (אופציונלי, בטוח)
+
+**קובץ:** `src/pipeline/router_block2.py`
+
+* אם לא נמצאו **שום** `GazetteerHit` ולא `VectorHit` לטוקן `word`, קריאה לשכבת LLM מצומצמת:
+
+  * שם: `canonicalize_terms_llm(text=surface, lang="he")`
+  * החזרת JSON: `{"canonical_terms_en":["multi-unit abutment"], "notes":[]}`
+  * **Guardrails:**
+
+    * JSON בלבד;
+    * ללא מספרים/units;
+    * מספר המילים ≤ 3;
+    * שימוש רק באלפבית לטיני ואותיות/רווח/מקף;
+  * הרץ שוב Vector על `canonical_terms_en`.
+* זה **לא מסוכן** כי הוא אינו מקצה IRI—רק מייצר מחרוזת באנגלית לשאילתת אמבדינג.
+
+---
+
+## בדיקות (Unit) שצריך להוסיף עכשיו
+
+1. **טוקן יחיד פאזי**
+
+   * קלט: `"שלת"` → hit ל‑*dental implant* (`match_type="fuzzy"`, `score_lex≈0.7`).
+2. **וריאנט HE→EN→IRI**
+
+   * `"מולטיוניט"` → hit Top‑1 ל‑*dental implant abutment* (alias).
+3. **אי‑קישור מספרים/זוגות**
+
+   * `"14 18/0"` → אין mentions (מלבד אולי hints כלליים); `vector/gazetteer` מתעלמים.
+4. **span נכון**
+
+   * על `"מולטיוניט שלת 14 18/0"` → שני mentions עם spans `[0,9]` ו‑`[10,13]`.
+5. **LLM‑Rescue**
+
+   * השבת ל‑router תשובה מזויפת `"canonical_terms_en": ["multi unit abutment"]` ואז vector מחזיר Top‑k.
+
+---
+
+## האם להוסיף שכבת LLM לזיהוי “פאזי”? – כן, אבל **רק כ‑Rescue String**
+
+* לא “זיהוי פאזי” שמחזיר ישות, אלא **נירמול מחרוזת**: HE→EN קנוני (2–3 מילים), ואז נמשיך בגזטיר/וקטור כרגיל.
+* תנאי הפעלה: *אין* hit לקסיקלי/וקטורי לטוקן.
+* Guardrails: JSON‑only, רג’קס ‎`^[A-Za-z][A-Za-z -]{0,40}$`‎, בלי ספרות/יחידות/סימנים אחרים.
+* אם חזר ערך שלא עומד בכללים → מתעלמים.
+
+> כך ה‑LLM רק “ממליץ” על מחרוזת שאילתה; ההחלטה על IRI מתבצעת ע”י המנועים הדטרמיניסטיים.
+
+---
+
+## מה לצפות אחרי הפאץ’
+
+**קלט:** `מולטיוניט שלת14 18/0`
+
+**Block 1** – ללא שינוי (טוב):
+
+* טוקנים: `["מולטיוניט"(0–9), "שלת"(10–13), "14"(14–16), "18/0"(17–21)]`
+
+**Block 2** – אחרי התיקונים:
+
+* **Gazetteer**
+
+  * mention 1: `"מולטיוניט"` → `OHD:… dental implant abutment` (`score_lex≈1.0`, `span=[0,9]`, `hints=["device_hint"]`)
+  * mention 2: `"שלת"` → `OHD:… dental implant` (`match_type="fuzzy"`, `score_lex≈0.7`, `span=[10,13]`, `hints=["implant_hint"]`)
+  * אין mentions ל‑`"14"`, `"18/0"`.
+
+* **Vector**
+
+  * “מולטיוניט” → Top‑k סביב *multi‑unit abutment*.
+  * “שלת” → Top‑k סביב *dental implant*.
+  * נורמליזציה תקינה (`norm_vec=0.0` אם אין קבוצה להשוואה).
+
+* **Hybrid merge**
+
+  * עבור “מולטיוניט”: `score_final≈0.85–0.95`, `confident_singleton=true`.
+  * עבור “שלת”: `score_final≈0.65–0.8`, `confident_singleton` תלוי ספים.
+
+* **MV (v2)**
+
+  * שתי שורות בלבד, עם טבלאות מועמדים ו‑spans נכונים—מוכן ל‑Block 2.5/3.
+
+---
+
+## שורה תחתונה
+
+* אל תוסיף שכבת LLM שמחזירה **ישויות** בשלב הזה—זה מסוכן.
+* כן תוסיף שכבת **LLM‑Rescue ל־מחרוזת קנונית באנגלית** (כשהכול נכשל), ובמקביל תיישם **פאזי עברית אמיתי + Fast‑Path לטוקן יחיד + גשר HE→EN→IRI**.
+* אחרי הפאץ’ הזה, בלוק 2 יחזיר מועמדים טובים ל“מולטיוניט”/“שלת”, ויהיה הגיוני לעבור ל‑**Block 2.5** (Pruner/Router לפי תבנית), ואז ל‑**Block 3** (דיסאמביוגציה מבוקרת).

@@ -1,0 +1,3 @@
+{"patient_id": "pat_1891", "procedure_id": "proc_pat_1891_t015374", "visit_id": null, "summary": {"status": "cancelled", "treatment_short_code_name": "ספלינט", "procedure_code": "ספ", "teeth_count": 0, "created_by": "שרון חבר"}}
+{"patient_id": "pat_1891", "procedure_id": "proc_pat_1891_t015375", "visit_id": null, "summary": {"status": "planned", "treatment_short_code_name": "ביקורת רופא שנתית", "procedure_code": "ברש", "teeth_count": 0, "created_by": "שרון חבר"}}
+{"patient_id": "pat_1891", "procedure_id": "proc_pat_1891_t015376", "visit_id": null, "summary": {"status": "planned", "treatment_short_code_name": "טיפול שיננית והדרכה", "procedure_code": "טשר", "teeth_count": 0, "created_by": "שרון חבר"}}

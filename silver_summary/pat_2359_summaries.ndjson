@@ -1,0 +1,2 @@
+{"patient_id": "pat_2359", "procedure_id": "proc_pat_2359_t021987", "visit_id": null, "summary": {"status": "planned", "treatment_short_code_name": "בדיקה + צילומים", "procedure_code": "בצ", "teeth_count": 0, "created_by": "שרון חבר"}}
+{"patient_id": "pat_2359", "procedure_id": "proc_pat_2359_t021988", "visit_id": "vis_pat_2359_20240408_prv_fa47dc0b", "summary": {"status": "cancelled", "treatment_short_code_name": "בדיקה + צילומים", "procedure_code": "בצ", "teeth_count": 0, "created_by": "שרון חבר", "provider": "prv_fa47dc0b"}}

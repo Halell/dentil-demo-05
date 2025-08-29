@@ -1,0 +1,2 @@
+{"patient_id": "pat_2577", "procedure_id": "proc_pat_2577_t024633", "visit_id": null, "summary": {"status": "planned", "treatment_short_code_name": "מבצע מונעת. שיננית + ביקורת", "procedure_code": "ממ", "teeth_count": 0, "created_by": "שרון חבר"}}
+{"patient_id": "pat_2577", "procedure_id": "proc_pat_2577_t024634", "visit_id": null, "summary": {"status": "planned", "treatment_short_code_name": "טיפול שיננית והדרכה", "procedure_code": "טשר", "teeth_count": 0, "created_by": "שרון חבר"}}

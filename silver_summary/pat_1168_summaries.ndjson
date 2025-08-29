@@ -1,0 +1,3 @@
+{"patient_id": "pat_1168", "procedure_id": "proc_pat_1168_t003547", "visit_id": null, "summary": {"status": "planned", "treatment_short_code_name": "טיפול שיננית והדרכה", "procedure_code": "טשר", "teeth_count": 0, "created_by": "קטי רינסקי"}}
+{"patient_id": "pat_1168", "procedure_id": "proc_pat_1168_t003548", "visit_id": null, "summary": {"status": "planned", "treatment_short_code_name": "בדיקה + צילום פנורמי", "procedure_code": "בפ", "teeth_count": 0, "created_by": "קטי רינסקי"}}
+{"patient_id": "pat_1168", "procedure_id": "proc_pat_1168_t003549", "visit_id": null, "summary": {"status": "planned", "teeth_count": 0, "patient_card_note": "אי הופעה", "created_by": "רוזי פלג - שיננית"}}
