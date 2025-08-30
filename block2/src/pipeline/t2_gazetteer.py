@@ -91,24 +91,29 @@ def build_gazetteer(lexicon_path: str, clinic_abbr: str, brand_names: str, en_al
         # skip numeric-only or extremely short labels
         if label.isdigit() or len(label) <= 2:
             continue
-        g.add(label.lower(), {"iri": iri, "label": label, "match_type": "label", "score_lex": LABEL_SCORE})
+        g.add(label.lower(), {"iri": iri, "label": label, "match_type": "label", "score_lex": LABEL_SCORE, "iri_source": "ohd_label"})
         for s in syns:
-            g.add(s.lower(), {"iri": iri, "label": label, "match_type": "synonym", "score_lex": SYN_SCORE})
+            g.add(s.lower(), {"iri": iri, "label": label, "match_type": "synonym", "score_lex": SYN_SCORE, "iri_source": "ohd_synonym"})
     # Clinic abbreviations
     with open(clinic_abbr, 'r', encoding='utf-8') as f:
         cabbr = json.load(f)
         for k, v in cabbr.items():
-            g.add(k.lower(), {"iri": f"ABBR:{k}", "label": v, "match_type": "label", "score_lex": LABEL_SCORE})
+            g.add(k.lower(), {"iri": f"ABBR:{k}", "label": v, "match_type": "label", "score_lex": LABEL_SCORE, "iri_source": "abbreviation"})
     # Brands
     with open(brand_names, 'r', encoding='utf-8') as f:
         brands = json.load(f)
         for k, lst in brands.items():
-            g.add(k.lower(), {"iri": f"BRAND:{k}", "label": k, "match_type": "label", "score_lex": LABEL_SCORE})
+            g.add(k.lower(), {"iri": f"BRAND:{k}", "label": k, "match_type": "label", "score_lex": LABEL_SCORE, "iri_source": "brand_label"})
             for alt in lst:
-                g.add(alt.lower(), {"iri": f"BRAND:{k}", "label": k, "match_type": "synonym", "score_lex": SYN_SCORE})
+                g.add(alt.lower(), {"iri": f"BRAND:{k}", "label": k, "match_type": "synonym", "score_lex": SYN_SCORE, "iri_source": "brand_synonym"})
     # Inject Hebrew variants
     for surface, code, eng in HEBREW_VARIANTS:
-        g.add(surface.lower(), {"iri": code, "label": surface, "match_type": "label", "score_lex": LABEL_SCORE, "eng": eng})
+        # Attempt to resolve English concept to real OHD IRI
+        resolved = resolve_alias_to_ohd(eng)
+        if resolved:
+            g.add(surface.lower(), {"iri": resolved['iri'], "label": surface, "match_type": "label", "score_lex": LABEL_SCORE, "eng": eng, "iri_source": resolved.get('iri_source','resolved_alias')})
+        else:
+            g.add(surface.lower(), {"iri": code, "label": surface, "match_type": "label", "score_lex": LABEL_SCORE, "eng": eng, "iri_source": "placeholder"})
     # English alias -> IRI map (manual bridge)
     if en_alias_map and Path(en_alias_map).exists():
         try:
@@ -117,15 +122,12 @@ def build_gazetteer(lexicon_path: str, clinic_abbr: str, brand_names: str, en_al
                 resolved = None
                 if not str(mapped).startswith('http://purl.obolibrary.org/obo/'):
                     resolved = resolve_alias_to_ohd(alias)
-                meta_base = {
-                    "label": alias,
-                    "match_type": "alias",
-                }
-                # Penalty for alias_only (unresolved)
+                meta_base = {"label": alias, "match_type": "alias"}
                 if resolved:
-                    meta = {"iri": resolved['iri'], **meta_base, "source": resolved['source'], "alias_only": False, "score_lex": SYN_SCORE}
+                    meta = {"iri": resolved['iri'], **meta_base, "iri_source": resolved.get('iri_source','resolved_alias'), "alias_only": False, "score_lex": SYN_SCORE}
                 else:
-                    meta = {"iri": mapped, **meta_base, "source": "alias", "alias_only": True, "score_lex": SYN_SCORE - 0.2}
+                    # unresolved placeholder
+                    meta = {"iri": mapped, **meta_base, "iri_source": "alias_only", "alias_only": True, "score_lex": SYN_SCORE - 0.2}
                 # Dedup: prefer label > synonym > vector > placeholder
                 surf = alias.lower()
                 existing = g.entries.get(surf, [])
@@ -157,9 +159,9 @@ def build_gazetteer(lexicon_path: str, clinic_abbr: str, brand_names: str, en_al
                     resolved = resolve_alias_to_ohd(en)
                     base_meta = {"label": en, "match_type": "he_en_alias", "he_src": he}
                     if resolved:
-                        meta = {"iri": resolved['iri'], **base_meta, "source": resolved['source'], "alias_only": False, "score_lex": SYN_SCORE}
+                        meta = {"iri": resolved['iri'], **base_meta, "iri_source": resolved.get('iri_source','resolved_alias'), "alias_only": False, "score_lex": SYN_SCORE}
                     else:
-                        meta = {"iri": f"HE2EN:{he}", **base_meta, "source": "he2en_placeholder", "alias_only": True, "score_lex": SYN_SCORE - 0.2}
+                        meta = {"iri": f"HE2EN:{he}", **base_meta, "iri_source": "placeholder", "alias_only": True, "score_lex": SYN_SCORE - 0.2}
                     surf = en.lower()
                     existing = g.entries.get(surf, [])
                     def _priority(m):
@@ -324,7 +326,9 @@ def run_gazetteer(merged_block1_path: str, out_path: str) -> None:
                             if m2.get('score_lex',1.0) >= 0.85:
                                 m2['score_lex'] = 0.82
                             m2['normalized_surface'] = 'שתל'
-                            m2['iri_source'] = m2.get('source') or 'variant'
+                            # preserve existing iri_source if available
+                            if 'iri_source' not in m2:
+                                m2['iri_source'] = 'resolved_alias'
                         raw_matches.append(((tok['span'][0], tok['span'][1]), m2))
                         covered_token_idxs.add(tok['idx'])
                     continue

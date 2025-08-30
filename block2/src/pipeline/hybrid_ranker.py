@@ -52,7 +52,8 @@ def merge_and_rank(gazetteer_file: str, vector_file: str, out_path: str) -> None
             candidates.append({
                 'iri': c['iri'],
                 'label': c['label'],
-                'score_lex': c.get('score_lex', 0.0)
+                'score_lex': c.get('score_lex', 0.0),
+                'iri_source': c.get('iri_source') or c.get('source')
             })
         merged[mid] = MentionCandidates(
             mention_id=mid,
@@ -72,13 +73,18 @@ def merge_and_rank(gazetteer_file: str, vector_file: str, out_path: str) -> None
         attached = False
         for mc in merged.values():
             if vh.surface.lower() in mc.surface.lower():
-                # merge vector candidates into same mention candidate list
+                # merge vector candidates into same mention candidate list; if IRI already exists add vec score
                 for c in vh.candidates_vec:
-                    mc.candidates.append({
-                        'iri': c['iri'],
-                        'label': c['label'],
-                        'score_vec': c.get('score_vec', 0.0)
-                    })
+                    existing = next((ec for ec in mc.candidates if ec['iri']==c['iri']), None)
+                    if existing:
+                        existing['score_vec'] = max(existing.get('score_vec',0.0), c.get('score_vec',0.0))
+                    else:
+                        mc.candidates.append({
+                            'iri': c['iri'],
+                            'label': c['label'],
+                            'score_vec': c.get('score_vec', 0.0),
+                            'iri_source': c.get('iri_source') or c.get('source')
+                        })
                 attached = True
                 break
         if attached:
@@ -88,7 +94,7 @@ def merge_and_rank(gazetteer_file: str, vector_file: str, out_path: str) -> None
         if span == (0,0) or not overlaps(span, existing_spans):
             candidates = []
             for c in vh.candidates_vec:
-                candidates.append({'iri': c['iri'], 'label': c['label'], 'score_vec': c.get('score_vec', 0.0)})
+                candidates.append({'iri': c['iri'], 'label': c['label'], 'score_vec': c.get('score_vec', 0.0), 'iri_source': c.get('iri_source') or c.get('source')})
             mid = vh.mention_id
             merged[mid] = MentionCandidates(
                 mention_id=mid,
@@ -132,22 +138,31 @@ def merge_and_rank(gazetteer_file: str, vector_file: str, out_path: str) -> None
             raw = sum(weights[k]*present[k] for k in present) / (Z or 1e-9)
             # alias_only penalty
             iri_src = c.get('iri_source') or c.get('source')
-            if iri_src == 'alias_only':
-                raw = max(0.0, raw - 0.08)
+            # Penalties / bonuses
+            if iri_src in {'alias_only','placeholder'}:
+                raw = max(0.0, raw - 0.10)
+            # Apply ontology priors only if we have more than just lexical evidence
+            has_vec_or_prior = (parts.get('vec') is not None) or (parts.get('prior') is not None)
+            if has_vec_or_prior:
+                if c.get('iri','').startswith('http://purl.obolibrary.org/obo/OHD_'):
+                    raw += 0.05
+                elif c.get('iri','').startswith('http://purl.obolibrary.org/obo/FMA_'):
+                    raw = max(0.0, raw - 0.03)
             c['score_final'] = raw + ctx_component
         mc.candidates.sort(key=lambda x: x['score_final'], reverse=True)
         # confident singleton rules
         if len(mc.candidates) == 1:
             c0 = mc.candidates[0]
             iri_src = c0.get('iri_source') or c0.get('source')
-            if c0.get('score_lex',0)>=0.9:
+            if (c0.get('score_final',0) >= 0.75) and iri_src in {"ohd_label","ohd_synonym","resolved_alias"}:
                 mc.confident_singleton = True
         else:
-            strong = [c for c in mc.candidates if c.get('score_lex',0)>=0.9]
+            # prune to single strong candidate only if its source reliable
+            strong = [c for c in mc.candidates if c.get('score_lex',0)>=0.9 and (c.get('iri_source') in {"ohd_label","ohd_synonym","resolved_alias"})]
             if len(strong) == 1:
-                # keep only the strong lexical candidate
                 mc.candidates = strong
-                mc.confident_singleton = True
+                if strong[0].get('score_final',0)>=0.75:
+                    mc.confident_singleton = True
         # restrict topK
         mc.candidates = mc.candidates[:cfg.TOPK_FINAL]
 

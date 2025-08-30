@@ -28,9 +28,28 @@ def run_block2_all(merged_block1_file: str, output_dir: str):
     mv_file = out / 'mv_candidates_v2.jsonl'
 
     run_gazetteer(merged_block1_file, str(gaz_file))
+    # Decide whether to force vector even with lexical hits (Fix Pack v4 #2)
+    force_vec = False
+    try:
+        with open(gaz_file,'r',encoding='utf-8') as fg:
+            for line in fg:
+                try:
+                    obj = json.loads(line)
+                except Exception:
+                    continue
+                cands = obj.get('candidates_lex') or []
+                if not cands:
+                    continue
+                # if all candidates are alias_only / placeholder -> force vector
+                if all((c.get('iri_source') in {'alias_only','placeholder'} or c.get('iri','').startswith(('DEVICE:','IMPLANT:','HE2EN:'))) for c in cands):
+                    force_vec = True
+                    break
+    except Exception:
+        force_vec = True
     if CONFIG.CAND_ENGINE == 'neo4j':
         run_vector_neo4j(merged_block1_file, str(vec_file))
     else:
+        # Always run vector if forced OR config requires; otherwise still run (lightweight) to capture context
         run_vector_faiss(merged_block1_file, str(vec_file))
     # LLM Rescue pass (only if both empty and feature desired)
     if CONFIG.FEATURES.get('llm_rescue', True) and _needs_rescue(gaz_file, vec_file):
