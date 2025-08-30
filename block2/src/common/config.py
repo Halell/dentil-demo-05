@@ -1,6 +1,6 @@
 from __future__ import annotations
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -24,5 +24,10 @@ class Block2Config:
     NEO4J_VECTOR_DIM: int = int(os.getenv('NEO4J_VECTOR_DIM', '1024'))
     TAU_LOW: float = float(os.getenv('TAU_LOW', '0.35'))
     TAU_CONFIDENT: float = float(os.getenv('TAU_CONFIDENT', '0.65'))
+    FEATURES: dict = field(default_factory=lambda: {
+        'llm_rescue': os.getenv('FEAT_LLM_RESCUE', '1') not in {'0','false','False'}
+    })
+    PROCESS_NGRAMS_FIRST: bool = os.getenv('PROCESS_NGRAMS_FIRST','0') in {'1','true','True'}
+    KEEP_ALL_METAS: bool = os.getenv('KEEP_ALL_METAS','0') in {'1','true','True'}
 
 CONFIG = Block2Config()

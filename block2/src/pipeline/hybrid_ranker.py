@@ -35,7 +35,7 @@ def _norm_scores(vals: List[float]) -> List[float]:
     mx = max(vals)
     mn = min(vals)
     if mx == mn:
-        return [0.0 for _ in vals]  # avoid inflating single candidate
+        return [0.0 for _ in vals]
     return [(v - mn)/(mx - mn) for v in vals]
 
 
@@ -98,25 +98,57 @@ def merge_and_rank(gazetteer_file: str, vector_file: str, out_path: str) -> None
                 candidates=candidates
             )
 
-    # Score normalization and final scoring
+    # Score aggregation (lex direct, vector normalized, prior (HY-1), context boost (HY-2), placeholder penalty (HY-3))
     for mc in merged.values():
-        lex_scores = [c.get('score_lex', 0.0) for c in mc.candidates]
-        vec_scores = [c.get('score_vec', 0.0) for c in mc.candidates]
-        norm_lex = _norm_scores(lex_scores)
-        norm_vec = _norm_scores(vec_scores)
-        for idx, c in enumerate(mc.candidates):
-            c['norm_lex'] = norm_lex[idx] if idx < len(norm_lex) else 0.0
-            c['norm_vec'] = norm_vec[idx] if idx < len(norm_vec) else 0.0
-            c['score_final'] = (
-                cfg.W_LEX * c.get('norm_lex', 0.0) +
-                cfg.W_VEC * c.get('norm_vec', 0.0)
-            )
-        # sort candidates
+        vec_scores = [c.get('score_vec', 0.0) for c in mc.candidates if c.get('score_vec') is not None]
+        norm_vec_all = _norm_scores(vec_scores) if any(vs > 0 for vs in vec_scores) else []
+        # assign normalized vector scores preserving order
+        vec_iter = iter(norm_vec_all)
+        for c in mc.candidates:
+            if c.get('score_vec') is not None and c.get('score_vec',0.0)>0:
+                c['norm_vec'] = next(vec_iter, 0.0)
+            else:
+                c['norm_vec'] = 0.0
+        for c in mc.candidates:
+            lex = c.get('score_lex', 0.0)  # already 0..1
+            vec = c.get('norm_vec', None)
+            prior = c.get('score_prior', 0.0)
+            # context boost placeholder (maintain existing behavior)
+            ctx_component = 0.0
+            # assemble parts present
+            parts = {
+                'lex': lex,
+                'vec': vec if vec and vec>0 else None,
+                'prior': prior if prior>0 else None,
+            }
+            present = {k:v for k,v in parts.items() if v is not None}
+            weights = {
+                'lex': cfg.W_LEX,
+                'vec': cfg.W_VEC,
+                'prior': cfg.W_PRIOR,
+                'ctx': cfg.W_CTX,
+            }
+            Z = sum(weights[k] for k in present)
+            raw = sum(weights[k]*present[k] for k in present) / (Z or 1e-9)
+            # alias_only penalty
+            iri_src = c.get('iri_source') or c.get('source')
+            if iri_src == 'alias_only':
+                raw = max(0.0, raw - 0.08)
+            c['score_final'] = raw + ctx_component
         mc.candidates.sort(key=lambda x: x['score_final'], reverse=True)
-        # determine singleton confidence
-        if mc.candidates and mc.candidates[0]['score_final'] >= cfg.TAU_CONFIDENT and (len(mc.candidates) == 1 or (len(mc.candidates)>1 and mc.candidates[0]['score_final'] - mc.candidates[1]['score_final'] > 0.2)):
-            mc.confident_singleton = True
-        # truncate
+        # confident singleton rules
+        if len(mc.candidates) == 1:
+            c0 = mc.candidates[0]
+            iri_src = c0.get('iri_source') or c0.get('source')
+            if c0.get('score_lex',0)>=0.9:
+                mc.confident_singleton = True
+        else:
+            strong = [c for c in mc.candidates if c.get('score_lex',0)>=0.9]
+            if len(strong) == 1:
+                # keep only the strong lexical candidate
+                mc.candidates = strong
+                mc.confident_singleton = True
+        # restrict topK
         mc.candidates = mc.candidates[:cfg.TOPK_FINAL]
 
     with open(out_path, 'w', encoding='utf-8') as f:

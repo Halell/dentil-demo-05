@@ -59,6 +59,10 @@ class SafetyValidator:
             Tuple of (is_valid, list of error messages)
         """
         errors = []
+
+        # If llm_result empty (no ops, no canonical terms) treat as valid passthrough early.
+        if not llm_result.ops and not llm_result.canonical_terms and not llm_result.tooth_groups:
+            return True, []
         
         # Validate number invariants
         number_errors = self._validate_numbers_invariant(llm_result, n0, t1)

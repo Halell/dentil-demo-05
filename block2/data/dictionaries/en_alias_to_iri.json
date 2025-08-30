@@ -1,6 +1,6 @@
 {
-  "multi unit abutment": "DEVICE:multiunit_abutment",
-  "multi-unit abutment": "DEVICE:multiunit_abutment",
-  "multiunit abutment": "DEVICE:multiunit_abutment",
-  "dental implant": "IMPLANT:שתל"
+    "multi unit abutment": "DEVICE:multiunit_abutment",
+    "multi-unit abutment": "DEVICE:multiunit_abutment",
+    "multiunit abutment": "DEVICE:multiunit_abutment",
+    "dental implant": "IMPLANT:שתל"
 }

@@ -1,0 +1,3 @@
+{"mention_id":"m0_0_3","surface":"שתל","span":[0,3],"ngram":1,"candidates_lex":[{"iri":"IMPLANT:שתל","label":"שתל","match_type":"label","score_lex":1.0,"eng":"dental implant"}],"hints":["device_hint"],"covered_token_idxs":[0]}
+{"mention_id":"m1_0_9","surface":"מולטיוניט","span":[0,9],"ngram":1,"candidates_lex":[{"iri":"DEVICE:multiunit_abutment","label":"מולטיוניט","match_type":"label","score_lex":1.0,"eng":"multi-unit abutment"}],"hints":[],"covered_token_idxs":[0]}
+{"mention_id":"m2_0_3","surface":"שתל","span":[0,3],"ngram":1,"candidates_lex":[{"iri":"IMPLANT:שתל","label":"שתל","match_type":"fuzzy","score_lex":0.75,"eng":"dental implant"}],"hints":["device_hint"],"covered_token_idxs":[0]}

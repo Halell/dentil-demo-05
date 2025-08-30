@@ -1,0 +1,4 @@
+{"mention_id": "m0_0_3", "surface": "שתל", "span": [0, 3], "selected": {"iri": "IMPLANT:שתל", "label": "שתל", "score_lex": 1.0, "norm_vec": 0.0, "score_final": 1.0}, "confident": true}
+{"mention_id": "m1_0_9", "surface": "מולטיוניט", "span": [0, 9], "selected": {"iri": "DEVICE:multiunit_abutment", "label": "מולטיוניט", "score_lex": 1.0, "norm_vec": 0.0, "score_final": 1.0}, "confident": true}
+{"mention_id": "m2_0_3", "surface": "שתל", "span": [0, 3], "selected": {"iri": "IMPLANT:שתל", "label": "שתל", "score_lex": 0.75, "norm_vec": 0.0, "score_final": 0.75}, "confident": false}
+{"mention_id": "v_1", "surface": "titanium", "span": [9, 17], "selected": {"iri": "http://purl.obolibrary.org/obo/OHD_0000195", "label": "titanium onlay restoration procedure", "score_vec": 0.5685811042785645, "norm_vec": 1.0, "score_final": 0.3}, "confident": false}

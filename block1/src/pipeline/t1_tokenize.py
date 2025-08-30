@@ -99,6 +99,15 @@ class T1Tokenizer:
             if not token:
                 match = self.number.match(text, pos)
                 if match:
+                    # Special handling: if original raw text had number immediately followed by unit, detect via raw_text slice
+                    full_num = match.group(0)
+                    remainder_start = match.end()
+                    glued_unit = None
+                    raw_no_space = n0.raw_text.replace(' ', '')
+                    for u in ['mm','cm','°','%']:
+                        if (full_num + u) in raw_no_space and text.startswith(u, remainder_start):
+                            glued_unit = u
+                            break
                     # Verify this number isn't part of a pair
                     is_pair_number = False
                     for start, end, _ in pair_spans:
@@ -109,19 +118,40 @@ class T1Tokenizer:
                     if not is_pair_number:
                         token = Token(
                             idx=token_idx,
-                            text=match.group(0),
+                            text=full_num,
                             kind="number",
                             span=[match.start(), match.end()],
                             script="digit"
                         )
+                        tokens.append(token)
+                        token_idx += 1
+                        pos = match.end()
+                        # If glued unit detected, emit unit token next
+                        if glued_unit:
+                            token = Token(
+                                idx=token_idx,
+                                text=glued_unit,
+                                kind="unit",
+                                span=[match.end(), match.end()+len(glued_unit)],
+                                script=None
+                            )
+                            tokens.append(token)
+                            token_idx += 1
+                            pos = match.end()+len(glued_unit)
+                        else:
+                            # continue loop (already advanced)
+                            continue
+                        # reset token so we don't append again at end
+                        token = None
             
-            # Check for unit
+            # Check for unit (either via regex or units_found metadata)
             if not token:
                 match = self.unit.match(text, pos)
                 if match:
+                    unit_txt = match.group(0)
                     token = Token(
                         idx=token_idx,
-                        text=match.group(0),
+                        text=unit_txt,
                         kind="unit",
                         span=[match.start(), match.end()],
                         script=None
@@ -139,12 +169,12 @@ class T1Tokenizer:
                         script=None
                     )
             
-            # If nothing matched, take single character as unknown
+        # If nothing matched, take single character as unknown / fallback
             if not token:
                 token = Token(
                     idx=token_idx,
                     text=text[pos],
-                    kind="word",  # Default to word
+            kind="word",  # default fallback
                     span=[pos, pos + 1],
                     script="mixed"
                 )
@@ -155,7 +185,7 @@ class T1Tokenizer:
         
         return TokensResult(
             text=n0.normalized_text,
-            tokens=tokens
+            tokens=self._post_classify_units(tokens)
         )
     
     def _detect_script(self, text: str) -> str:
@@ -172,6 +202,15 @@ class T1Tokenizer:
             return "digit"
         else:
             return "mixed"
+
+    def _post_classify_units(self, tokens: List[Token]) -> List[Token]:
+        """Relabel tokens that are known measurement units but were initially tagged as word.
+        This handles cases like 'mm' appearing after normalization with a space (e.g., '2 mm')."""
+        unit_set = {"mm","cm","°","%"}
+        for t in tokens:
+            if t.text in unit_set and t.kind == 'word':
+                t.kind = 'unit'
+        return tokens
 
 
 # Convenience function
